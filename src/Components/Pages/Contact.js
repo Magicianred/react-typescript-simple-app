@@ -199,7 +199,7 @@ class Contact extends Component {
                                                         : null }
                                             </Form.Group>
                                             {/* {validatedData ? <Badge variant="success">All data is correct!</Badge> : null} */}
-                                            <Button disabled={!validatedData} variant="primary" type="button" onClick={() => this.handleSubmit()}>
+                                            <Button disabled={!validatedData} variant="primary" type="button" onClick={(e) => this.handleSubmit(e)}>
                                                 Send message
                                             </Button><br />
                                             {errorsData && errorsData.length > 0 ? <Badge variant="danger">You have errors in form</Badge> : null}

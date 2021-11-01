@@ -12,7 +12,7 @@ exports[`Show the Header site Snapshots Matches the snapshot (with default title
       href="/"
     >
       <img
-        alt="Default Site title logo"
+        alt="undefined logo"
         className="d-inline-block align-top"
         height="30"
         src="logo.svg"
