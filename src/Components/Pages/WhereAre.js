@@ -7,7 +7,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
-import sanitizeHtml from 'sanitize-html';
 
 import { places as data } from './../../data/places';
 import Place from './../../Models/Place';
@@ -47,7 +46,7 @@ class WhereAre extends Component {
     }
 
     render() {
-        const { places, currentPlaceId, hasError } = this.state;
+        const { places, hasError } = this.state;
         return (
             <>
                 {hasError ? <h1>Something went wrong.</h1> : null}

@@ -7,7 +7,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import _ from 'lodash';
-import sanitizeHtml from 'sanitize-html';
 
 import FormValidateMessage from './../Utils/FormValidateMessage';
 

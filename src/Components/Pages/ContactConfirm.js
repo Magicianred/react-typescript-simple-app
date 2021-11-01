@@ -12,7 +12,7 @@ class ContactConfirmInner extends Component {
     };
 
     render() {
-        const { match, location, history } = this.props;
+        const { location } = this.props;
         const params = queryString.parse(location.search)
 
         return (
