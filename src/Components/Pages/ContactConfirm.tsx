@@ -4,7 +4,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 
-class ContactConfirmInner extends Component {
+class ContactConfirmInner extends Component<any, any> {
     static propTypes = {
       match: PropTypes.object.isRequired,
       location: PropTypes.object.isRequired,

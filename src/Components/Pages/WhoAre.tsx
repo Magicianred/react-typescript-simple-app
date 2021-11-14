@@ -19,9 +19,9 @@ import Person from './../../Models/Person';
  *   <WhoAre />
  * )
  */
-class WhoAre extends Component {
+class WhoAre extends Component<any, any> {
     
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {
             people: [],
@@ -32,18 +32,18 @@ class WhoAre extends Component {
     }
 
     componentDidMount() {
-        const people = [];
+        const people: Array<Person> = [];
         data.map(person => people.push(new Person(person.id, person.name, person.surname, person.shortbio, person.email, person.profilesrc)));
         let currentPersonId = undefined;
         if (people && people.length > 0) currentPersonId = people[0].id;
         this.setState({ people, currentPersonId });
     }
 
-    static getDerivedStateFromError(error) {       
+    static getDerivedStateFromError(/* error */) {       
         return { hasError: true };  
     }
 
-    onShowPerson = (personId) => {
+    onShowPerson = (personId: number) => {
         this.setState({ currentPersonId: personId });
     }
 
@@ -65,7 +65,7 @@ class WhoAre extends Component {
                                     </p>
                                     {people && people.length > 0 ?
                                         <ListGroup>
-                                        {people.map((person, index) =>
+                                        {people.map((person: Person, index: number) =>
                                             <ListGroup.Item key={index} action onClick={() => this.onShowPerson(person.id)}>
                                             {person.name} {person.surname} <Badge variant="secondary">show details</Badge>
                                             </ListGroup.Item>)}
@@ -74,7 +74,7 @@ class WhoAre extends Component {
                             </Col>
                             <Col sm={4}>
                                 {people && people.length > 0 ?
-                                    people.map(person => (person.id === currentPersonId) ?
+                                    people.map((person: Person) => (person.id === currentPersonId) ?
                                         person.toDisplay() : null) 
                                     : null}
                             </Col>

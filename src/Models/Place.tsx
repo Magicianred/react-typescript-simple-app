@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -14,7 +14,13 @@ import Button from 'react-bootstrap/Button';
  * @property {string} description
  */
 class Place {
-
+  id: number;
+  title: string;
+  address: string;
+  country: string;
+  phone: string;
+  description: string;
+  
     /**
      * @constructor
      * @param {*} id 
@@ -24,7 +30,7 @@ class Place {
      * @param {*} phone 
      * @param {*} description 
      */
-    constructor(id, title, address, country, phone, description) {
+    constructor(id: number, title: string, address: string, country: string, phone: string, description: string) {
         this.id = id;
         this.title = title;
         this.address = address;
@@ -48,14 +54,14 @@ class Place {
      *  </div>
      * )
      */
-    toDisplay = (index) => (
+    toDisplay = (index: number) : ReactElement => (
         <Card key={index} className="place">
           <Card.Header>
-            <Accordion.Toggle as={Button} variant="link" eventKey={index}>
+            <Accordion.Toggle as={Button} variant="link" eventKey={index.toString()}>
                 <h4 className="pl_title">{this.title}</h4>
             </Accordion.Toggle>
           </Card.Header>
-          <Accordion.Collapse eventKey={index}>
+          <Accordion.Collapse eventKey={index.toString()}>
             <Card.Body>
               <p className="pl_description">{this.description}</p>
               <dl>

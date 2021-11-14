@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import sanitizeHtml from 'sanitize-html';
 
@@ -11,7 +11,11 @@ import sanitizeHtml from 'sanitize-html';
  * @property {string} imagesrc
  */
 class HomeMessage {
-
+    id: number;
+    title: string;
+    text: string;;
+    imagesrc: string;
+;
     /**
      * @constructor
      * @param {*} id 
@@ -19,7 +23,7 @@ class HomeMessage {
      * @param {*} text 
      * @param {*} imagesrc 
      */
-    constructor(id, title, text, imagesrc) {
+    constructor(id: number, title: string, text: string, imagesrc: string) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -42,8 +46,8 @@ class HomeMessage {
      *  </Carousel.Item>
      * )
      */
-    toDisplay = () => (
-        <Carousel.Item key={this.id}>
+    toDisplay = () : ReactElement => {
+        return (<Carousel.Item key={this.id}>
             <img
                 className="d-block w-100"
                 src={this.imagesrc}
@@ -53,8 +57,8 @@ class HomeMessage {
                 <h3>{this.title}</h3>
                 {sanitizeHtml(this.text, { allowedTags: ['a', 'p'] })}
             </Carousel.Caption>
-        </Carousel.Item>
-    );
+        </Carousel.Item>);
+    }
 }
 
 export default HomeMessage;

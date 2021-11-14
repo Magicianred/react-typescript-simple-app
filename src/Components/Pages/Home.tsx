@@ -14,9 +14,9 @@ import HomeMessage from './../../Models/HomeMessage';
  *   <Home />
  * )
  */
-class Home extends Component {
+class Home extends Component<any, any> {
     
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {
             messages: [],
@@ -25,12 +25,12 @@ class Home extends Component {
     }        
 
     componentDidMount() {
-        const messages = [];
+        const messages: Array<HomeMessage> = [];
         data.map(message => messages.push(new HomeMessage(message.id, message.title, message.text, message.imagesrc)));
         this.setState({ messages });
     }
 
-    static getDerivedStateFromError(error) {       
+    static getDerivedStateFromError(/* error */) {       
         return { hasError: true };  
     }    
 
@@ -46,7 +46,7 @@ class Home extends Component {
                         <hr />
                         {messages && messages.length > 0 ?
                             <Carousel>
-                                {messages.map(message => message.toDisplay())}
+                                {messages.map((message: HomeMessage) => message.toDisplay())}
                             </Carousel>
                             : null }
                     </Jumbotron>

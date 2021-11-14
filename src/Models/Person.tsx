@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
@@ -13,7 +13,13 @@ import Button from 'react-bootstrap/Button';
  * @property {string} profilesrc
  */
 class Person {
-
+    id: number;
+    name: string;
+    surname: string;
+    shortbio: string;
+    email: string;
+    profilesrc: string;
+    
     /**
      * @constructor
      * @param {*} id 
@@ -23,7 +29,7 @@ class Person {
      * @param {*} email 
      * @param {*} profilesrc 
      */
-    constructor(id, name, surname, shortbio, email, profilesrc) {
+    constructor(id: number, name: string, surname: string, shortbio: string, email: string, profilesrc: string) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -47,9 +53,9 @@ class Person {
      *   </Card>
      * )
      */
-    toDisplay = () => (
+    toDisplay = () : ReactElement => (
         <Card key={this.id} className="person" style={{ width: '18rem', margin: "20px" }}>
-            <Card.Img variant="top" src={this.profilesrc} style={{ align: "center", padding: "20px", width: "200px", height: "200px"}} />
+            <Card.Img variant="top" src={this.profilesrc} style={{ alignContent: "center", padding: "20px", width: "200px", height: "200px"}} />
             <Card.Body>
                 <Card.Title className="p_completename">{this.name} {this.surname}</Card.Title>
                 <Card.Text className="p_shortbio">

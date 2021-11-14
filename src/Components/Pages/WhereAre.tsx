@@ -20,9 +20,9 @@ import Place from './../../Models/Place';
  *   <WhereAre />
  * )
  */
-class WhereAre extends Component {
+class WhereAre extends Component<any, any> {
     
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {
             places: [],
@@ -32,16 +32,16 @@ class WhereAre extends Component {
     }
 
     componentDidMount() {
-        const places = [];
+        const places: Array<Place> = [];
         data.map(place => places.push(new Place(place.id, place.title, place.address, place.country, place.phone, place.description)));
         this.setState({ places });
     }
 
-    static getDerivedStateFromError(error) {       
+    static getDerivedStateFromError(/* error */) {       
         return { hasError: true };  
     }
 
-    onShowPlace = (placeId) => {
+    onShowPlace = (placeId: number) => {
         this.setState({ currentPlaceId: placeId });
     }
 
@@ -66,14 +66,14 @@ class WhereAre extends Component {
                                     </p>
                                     {places && places.length > 0 ?
                                         <ListGroup variant="flush">
-                                            {places.map((place, index) =><ListGroup.Item key={index}>{place.title} <Badge variant="info">{place.country}</Badge></ListGroup.Item>)}
+                                            {places.map((place: Place, index: number) =><ListGroup.Item key={index}>{place.title} <Badge variant="info">{place.country}</Badge></ListGroup.Item>)}
                                         </ListGroup> : null}
                                 </Jumbotron>
                             </Col>
                             <Col sm={4}>
                                 {places && places.length > 0 ?
                                     <Accordion defaultActiveKey="0">
-                                        {places.map((place, index) => place.toDisplay(index))}
+                                        {places.map((place: Place, index: number) => place.toDisplay(index))}
                                     </Accordion> : null}
                             </Col>
                         </Row>
