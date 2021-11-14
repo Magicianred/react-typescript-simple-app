@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent, MouseEvent } from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -8,7 +8,21 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import _ from 'lodash';
 
+import ErrorMessage from './../../Models/ErrorMessage';
 import FormValidateMessage from './../Utils/FormValidateMessage';
+
+interface ContactComponentProps {
+};
+
+interface ContactComponentState {
+    firstName: string | undefined,
+    lastName: string | undefined,
+    email: string | undefined,
+    message: string | undefined,
+    privacy: boolean,
+    hasError: boolean,
+    errorsData: Array<ErrorMessage>,
+}
 
 /**
  * Component for showing the Contact Us page.
@@ -19,9 +33,9 @@ import FormValidateMessage from './../Utils/FormValidateMessage';
  *   <Contact />
  * )
  */
-class Contact extends Component {
+class Contact extends Component<ContactComponentProps, ContactComponentState> {
     
-    constructor(props) {
+    constructor(props : ContactComponentProps) {
         super(props);
         this.state = {
             firstName: undefined,
@@ -38,7 +52,7 @@ class Contact extends Component {
         this.setInitialDataErrors();
     }
 
-    static getDerivedStateFromError(error) {       
+    static getDerivedStateFromError(/* error */) {       
         return { hasError: true };  
     }
 
@@ -53,36 +67,41 @@ class Contact extends Component {
         this.setState({ errorsData });
     }
 
-    setInvalidField(fieldName, message = "Field is empty or invalid" ) {
+    setInvalidField(fieldName: string, message: string = "Field is empty or invalid" ) {
         let { errorsData } = this.state;
         errorsData.push({ "field": fieldName, "message": message });
         this.setState({ errorsData });
     }
 
-    setValidField(fieldName) {
+    setValidField(fieldName: string) {
         let { errorsData } = this.state;
         errorsData = _.remove(errorsData, (item) => item.field === fieldName);
         this.setState({ errorsData });
     }
 
-    getErrorField = (fieldName) => {
+    getErrorField = (fieldName: string) : string => {
         const { errorsData } = this.state;
         const element = errorsData.find(element => element.field === fieldName);
-        return element;
+        if(element) {
+            return element.message;
+        }
+        return '';
     }
 
-    validateData = (fieldName, value) => {
+    validateData = (fieldName: string, value: string | boolean) => {
         const { errorsData } = this.state;
         const element = errorsData.find(element => element.field === fieldName);
         switch(fieldName) {
             case 'email':
-                const isValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-                if (!isValid) {
-                    if (element === undefined) {
-                        this.setInvalidField(fieldName, "Email is invalid");
+                if (typeof value === 'string') {
+                    const isValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+                    if (!isValid) {
+                        if (element === undefined) {
+                            this.setInvalidField(fieldName, "Email is invalid");
+                        }
+                    } else {
+                        this.setValidField(fieldName);
                     }
-                } else {
-                    this.setValidField(fieldName);
                 }
                 break;
             case 'privacy':
@@ -106,21 +125,21 @@ class Contact extends Component {
         }
     }
 
-    handleChange = (evt) => {
+    handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
         const name = evt.target.name || evt.target.id;
         const value = evt.target.type === "checkbox" ? evt.target.checked : evt.target.value;
         this.validateData(name, value);
         this.setState({ ...this.state, [name]: value });
     }
 
-    onSendMessage = (evt) => {
+    onSendMessage = (evt: ChangeEvent<HTMLInputElement>) => {
         const { errorsData, firstName, lastName } = this.state;
-        if (!(errorsData || errorsData.length > 0)) {
+        if (errorsData && errorsData instanceof Array && errorsData.length > 0) {
             window.location.assign(`/contact/confirm?name=${firstName}&surname=${lastName}`);
         }
     }
 
-    handleSubmit = event => {
+    handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
         const { firstName, lastName } = this.state;
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
@@ -156,7 +175,7 @@ class Contact extends Component {
                                                 <Form.Label>First Name</Form.Label>
                                                 <Form.Control required placeholder="First name" onChange={this.handleChange} />
                                                 {errorsData && this.getErrorField("firstName") ?
-                                                    <FormValidateMessage errormessage={this.getErrorField("firstName").message} /> 
+                                                    <FormValidateMessage errormessage={this.getErrorField("firstName")} /> 
                                                         : null }
                                             </Form.Group>
                                         </Col>
@@ -165,7 +184,7 @@ class Contact extends Component {
                                                 <Form.Label>Last Name</Form.Label>
                                                 <Form.Control required placeholder="Last name" onChange={this.handleChange} />
                                                 {errorsData && this.getErrorField("lastName") ?
-                                                    <FormValidateMessage errormessage={this.getErrorField("lastName").message} /> 
+                                                    <FormValidateMessage errormessage={this.getErrorField("lastName")} /> 
                                                         : null }
                                             </Form.Group>
                                         </Col>
@@ -176,7 +195,7 @@ class Contact extends Component {
                                                 <Form.Label>Email address</Form.Label>
                                                 <Form.Control required type="email" placeholder="Enter your email" onChange={this.handleChange} />
                                                 {errorsData && this.getErrorField("email") ?
-                                                    <FormValidateMessage errormessage={this.getErrorField("email").message} /> 
+                                                    <FormValidateMessage errormessage={this.getErrorField("email")} /> 
                                                         : null } 
                                                     {!errorsData && !this.getErrorField("email") ?
                                                         <Form.Text className="text-muted">
@@ -188,18 +207,18 @@ class Contact extends Component {
                                                 <Form.Label>Say something to us</Form.Label>
                                                 <Form.Control required as="textarea" rows="3" onChange={this.handleChange} />
                                                 {errorsData && this.getErrorField("message") ?
-                                                    <FormValidateMessage errormessage={this.getErrorField("message").message} /> 
+                                                    <FormValidateMessage errormessage={this.getErrorField("message")} /> 
                                                         : null }
                                             </Form.Group>
 
                                             <Form.Group controlId="privacy">
                                                 <Form.Check required type="checkbox" label="Accept your privacy condition" onChange={this.handleChange} />
                                                 {errorsData && this.getErrorField("privacy") ?
-                                                    <FormValidateMessage errormessage={this.getErrorField("privacy").message} /> 
+                                                    <FormValidateMessage errormessage={this.getErrorField("privacy")} /> 
                                                         : null }
                                             </Form.Group>
                                             {/* {validatedData ? <Badge variant="success">All data is correct!</Badge> : null} */}
-                                            <Button disabled={!validatedData} variant="primary" type="button" onClick={(e) => this.handleSubmit(e)}>
+                                            <Button disabled={!validatedData} variant="primary" type="button" onClick={(e: MouseEvent<HTMLButtonElement>) => this.handleSubmit(e)}>
                                                 Send message
                                             </Button><br />
                                             {errorsData && errorsData.length > 0 ? <Badge variant="danger">You have errors in form</Badge> : null}
